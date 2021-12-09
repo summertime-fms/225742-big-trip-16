@@ -6,7 +6,7 @@ export const EVENT_TYPES = [
   'Drive',
   'Flight',
   'Check-In',
-  'Sightseen',
+  'Sightseeing',
   'Restaurant'
 ];
 

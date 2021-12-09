@@ -2,14 +2,16 @@ import { createNavTemplate } from './view/menu-view';
 import { createFilterTemplate } from './view/filters-view';
 import { createSortTemplate } from './view/sort-view';
 import { createContentListTemplate } from './view/content-list-view';
-import { createTripEventTemplate } from './view/trip-event-view';
+import { createTripEventTemplate } from './view/event-view';
 import { createEventEditTemplate } from './view/event-edit-view';
 import { generateEvent } from './mock/event';
 
 import { RenderPosition, renderTemplate } from './render-helpers';
-import { EVENT_TYPES } from './mock/const';
+import { getEvent } from './mock/event';
 
-const TRIP_ITEMS = 3;
+const EVENTS_COUNT = 3;
+
+const events = Array.from({length: EVENTS_COUNT}, getEvent);
 
 //containers
 
@@ -31,8 +33,6 @@ const tripEventContainer = contentListContainer.querySelector('.trip-events__lis
 
 renderTemplate(tripEventContainer, createEventEditTemplate(), RenderPosition.AFTERBEGIN);
 
-for (let i = 0; i < TRIP_ITEMS; i++) {
-  renderTemplate(tripEventContainer, createTripEventTemplate(), RenderPosition.BEFOREEND);
+for (let i = 0; i < EVENTS_COUNT; i++) {
+  renderTemplate(tripEventContainer, createTripEventTemplate(events[i]), RenderPosition.BEFOREEND);
 }
-
-console.log(generateEvent());

@@ -1,8 +1,16 @@
+import dayjs from 'dayjs';
+
 import { getRandomInteger } from '../utils';
 import { EVENT_TYPES, CITIES, DESCRIPTION_SENTENCES } from './const';
 import { getOption } from './options';
 
 const OPTIONS_COUNT = 3;
+
+const getDate = () => {
+  const maxDaysGap = 31;
+  const daysGap = getRandomInteger(-maxDaysGap, maxDaysGap);
+  return dayjs().add(daysGap, 'day').toDate();
+};
 
 const getEventType = () => {
   const randomIndex = getRandomInteger(0, EVENT_TYPES.length - 1);
@@ -30,7 +38,7 @@ const getEventPics = () => {
   return picsArray;
 };
 
-export const generateEvent = () => {
+export const getEvent = () => {
   const options = [];
   for (let i = 0; i < OPTIONS_COUNT; i++) {
     options.push(getOption());
@@ -39,10 +47,12 @@ export const generateEvent = () => {
   const event = {
     type: getEventType(),
     city: getCity(),
-    options: options, //TODO: получить несколько опций
+    options: options,
     description: getDescription(),
     pics: getEventPics(),
-    isFavourite: Boolean(getRandomInteger(0, -1))
+    isFavourite: Boolean(getRandomInteger(0, -1)),
+    date: getDate(),
+    price: getRandomInteger(50, 500),
   };
 
   return event;
