@@ -4,8 +4,10 @@ import { createSortTemplate } from './view/sort-view';
 import { createContentListTemplate } from './view/content-list-view';
 import { createTripEventTemplate } from './view/trip-event-view';
 import { createEventEditTemplate } from './view/event-edit-view';
+import { generateEvent } from './mock/event';
 
 import { RenderPosition, renderTemplate } from './render-helpers';
+import { EVENT_TYPES } from './mock/const';
 
 const TRIP_ITEMS = 3;
 
@@ -32,3 +34,5 @@ renderTemplate(tripEventContainer, createEventEditTemplate(), RenderPosition.AFT
 for (let i = 0; i < TRIP_ITEMS; i++) {
   renderTemplate(tripEventContainer, createTripEventTemplate(), RenderPosition.BEFOREEND);
 }
+
+console.log(generateEvent());
