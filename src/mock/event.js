@@ -1,15 +1,58 @@
 import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+dayjs.extend(duration);
 
-import { getRandomInteger } from '../utils';
+import { getRandomInteger, dateParams } from '../utils';
 import { EVENT_TYPES, CITIES, DESCRIPTION_SENTENCES } from './const';
 import { getOption } from './options';
 
 const OPTIONS_COUNT = 3;
 
 const getDate = () => {
-  const maxDaysGap = 31;
-  const daysGap = getRandomInteger(-maxDaysGap, maxDaysGap);
-  return dayjs().add(daysGap, 'day').toDate();
+  const startDate = dayjs()
+    .add(getRandomInteger(0, dateParams.DAYS_GAP), 'day')
+    .add(getRandomInteger(0, dateParams.HOURS_GAP), 'hours')
+    .add(getRandomInteger(0, dateParams.MINUTES_GAP), 'minutes')
+    .add(getRandomInteger(0, dateParams.SECONDS_GAP), 'seconds')
+    .toDate();
+
+  const endDate = dayjs(startDate).add(getRandomInteger(1, 5), 'days')
+    .add(getRandomInteger(0, dateParams.DAYS_GAP), 'day')
+    .add(getRandomInteger(0, dateParams.HOURS_GAP), 'hours')
+    .add(getRandomInteger(0, dateParams.MINUTES_GAP), 'minutes')
+    .add(getRandomInteger(0, dateParams.SECONDS_GAP), 'seconds')
+    .toDate();
+
+  const eventDuration = dayjs(endDate).diff(startDate);
+
+  return { startDate, endDate, eventDuration };
+};
+
+const getFormattedDuration = (eventDuration) => {
+  const isLeadingZeroNumber = (num) => num >= 10 ? num : `0${num}`;
+
+  const durationSeconds = parseInt(eventDuration / dateParams.MS_PER_SECOND, 10);
+  const durationMinutes = parseInt(durationSeconds / dateParams.SECONDS_PER_MINUTE, 10);
+  const durationHours = parseInt(durationMinutes / dateParams.MINUTES_PER_HOUR, 10);
+  const durationDays = parseInt(durationHours / dateParams.HOURS_PER_DAY, 10);
+
+  const relativeMinutes = dayjs.duration(eventDuration).minutes();
+  const relativeHours = dayjs.duration(eventDuration).hours();
+  const relativeDays = dayjs.duration(eventDuration).days();
+
+  const formatedMinutes = `${isLeadingZeroNumber(relativeMinutes)}M`;
+  const formatedHours = `${isLeadingZeroNumber(relativeHours)}H`;
+  const formatedDays = `${isLeadingZeroNumber(relativeDays)}D`;
+
+  if (durationHours < 1) {
+    return `${formatedMinutes}`;
+  }
+
+  if (durationDays < 1) {
+    return `${formatedHours} ${formatedMinutes}`;
+  }
+
+  return `${formatedDays} ${formatedHours} ${formatedMinutes}`;
 };
 
 const getEventType = () => {
@@ -44,6 +87,8 @@ export const getEvent = () => {
     options.push(getOption());
   }
 
+  const { startDate, endDate, eventDuration } = getDate();
+
   const event = {
     type: getEventType(),
     city: getCity(),
@@ -51,7 +96,9 @@ export const getEvent = () => {
     description: getDescription(),
     pics: getEventPics(),
     isFavourite: Boolean(getRandomInteger(0, -1)),
-    date: getDate(),
+    startDate: startDate,
+    endDate: endDate,
+    eventDuration: getFormattedDuration(eventDuration),
     price: getRandomInteger(50, 500),
   };
 

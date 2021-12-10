@@ -4,16 +4,16 @@ import { createSortTemplate } from './view/sort-view';
 import { createContentListTemplate } from './view/content-list-view';
 import { createTripEventTemplate } from './view/event-view';
 import { createEventEditTemplate } from './view/event-edit-view';
-import { generateEvent } from './mock/event';
 
 import { RenderPosition, renderTemplate } from './render-helpers';
 import { getEvent } from './mock/event';
 
-const EVENTS_COUNT = 3;
+const EVENTS_COUNT = 15;
 
 const events = Array.from({length: EVENTS_COUNT}, getEvent);
 
 //containers
+console.log(getEvent());
 
 const main = document.querySelector('main');
 
