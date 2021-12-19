@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
+import { getFormattedDuration } from '../utils';
 dayjs.extend(duration);
 
 const createSheduleTemplate = (startDate, endDate, eventDuration) => (
@@ -9,13 +10,14 @@ const createSheduleTemplate = (startDate, endDate, eventDuration) => (
     &mdash;
     <time class="event__end-time" datetime="2019-03-19T11:00">${dayjs(endDate).format('HH:MM')}</time>
   </p>
-  <p class="event__duration">${eventDuration}</p>
+  <p class="event__duration">${getFormattedDuration(eventDuration)}</p>
 </div>`
 );
 
 
 export const createTripEventTemplate = (event) => {
-  const {type, city, startDate, endDate, eventDuration, price, isFavourite} = event;
+  const {type, city, startDate, endDate, price, isFavourite} = event;
+  const eventDuration = dayjs(endDate).diff(startDate);
   const sheduleTemplate = createSheduleTemplate(startDate, endDate, eventDuration);
   const eventDay = dayjs(startDate).format('DD MMM');
 

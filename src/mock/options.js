@@ -1,13 +1,12 @@
-import { EVENT_TYPES } from './const';
+import { EVENT_TYPES, optionsParams } from './const';
 import { getRandomInteger } from '../utils';
-import { optionsParams } from './const';
 
-const getEventType = () => {
+const getRandomEventType = () => {
   const randomIndex = getRandomInteger(0, EVENT_TYPES.length - 1);
   return EVENT_TYPES[randomIndex];
 };
 
-const getOptionName = () => {
+const getRandomOptionName = () => {
   const randomIndex = getRandomInteger(0, optionsParams.names.length - 1);
   return optionsParams.names[randomIndex];
 };
@@ -18,8 +17,8 @@ const getRandomPrice = () => {
 };
 
 export const getOption = () => ({
-  eventType: getEventType(),
-  name: getOptionName(),
+  eventType: getRandomEventType(),
+  name: getRandomOptionName(),
   price: getRandomPrice()
 });
 

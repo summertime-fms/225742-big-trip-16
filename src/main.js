@@ -13,8 +13,6 @@ const EVENTS_COUNT = 15;
 const events = Array.from({length: EVENTS_COUNT}, getEvent);
 
 //containers
-console.log(getEvent());
-
 const main = document.querySelector('main');
 
 const navContainer = document.querySelector('.trip-controls__navigation');
