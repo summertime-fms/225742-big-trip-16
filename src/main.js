@@ -29,7 +29,7 @@ renderTemplate(contentListContainer, createContentListTemplate(), RenderPosition
 
 const tripEventContainer = contentListContainer.querySelector('.trip-events__list');
 
-renderTemplate(tripEventContainer, createEventEditTemplate(), RenderPosition.AFTERBEGIN);
+renderTemplate(tripEventContainer, createEventEditTemplate(events[0]), RenderPosition.AFTERBEGIN);
 
 for (let i = 0; i < EVENTS_COUNT; i++) {
   renderTemplate(tripEventContainer, createTripEventTemplate(events[i]), RenderPosition.BEFOREEND);

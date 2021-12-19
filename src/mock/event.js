@@ -4,7 +4,7 @@ dayjs.extend(duration);
 
 import { getRandomInteger } from '../utils';
 
-import { EVENT_TYPES, CITIES, DESCRIPTION_SENTENCES } from './const';
+import { EVENT_TYPES, City, DESCRIPTION_SENTENCES } from './const';
 import { getOption } from './options';
 
 const OPTIONS_COUNT = 3;
@@ -39,11 +39,6 @@ const getEventType = () => {
   return EVENT_TYPES[randomIndex];
 };
 
-const getCity = () => {
-  const randomIndex = getRandomInteger(0, CITIES.length - 1);
-  return CITIES[randomIndex];
-};
-
 const getDescription = () => {
   const sentencesArray = DESCRIPTION_SENTENCES.split('.')
     .map((sentence) => sentence.trim())
@@ -52,12 +47,26 @@ const getDescription = () => {
   return shuffledSentences.splice(0, getRandomInteger(1, 5));
 };
 
-const getEventPics = () => {
+const getDestinationPics = () => {
   const picsArray = [];
   for (let i = 0; i < getRandomInteger(1, 5); i++) {
-    picsArray.push(`http://picsum.photos/248/152?r=${getRandomInteger(1, 100)}`);
+    const pic = {};
+    pic.src = `http://picsum.photos/248/152?r=${getRandomInteger(1, 100)}`;
+    pic.description = getDescription();
+    picsArray.push(pic);
   }
+
   return picsArray;
+};
+
+const getDestination = () => {
+  const destination = {};
+  const randomIndex = getRandomInteger(0, City.length - 1);
+
+  destination.city = City[randomIndex];
+  destination.desc = getDescription();
+  destination.pics = getDestinationPics();
+  return destination;
 };
 
 export const getEvent = () => {
@@ -70,14 +79,11 @@ export const getEvent = () => {
 
   const event = {
     type: getEventType(),
-    city: getCity(),
+    destination: getDestination(),
     options: options,
-    description: getDescription(),
-    pics: getEventPics(),
     isFavourite: Boolean(getRandomInteger(0, -1)),
     startDate: startDate,
     endDate: endDate,
-    // eventDuration: getFormattedDuration(eventDuration),
     price: getRandomInteger(50, 500),
   };
 

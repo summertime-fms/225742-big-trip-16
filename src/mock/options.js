@@ -16,10 +16,17 @@ const getRandomPrice = () => {
   return optionsParams.prices[randomIndex];
 };
 
-export const getOption = () => ({
-  eventType: getRandomEventType(),
-  name: getRandomOptionName(),
-  price: getRandomPrice()
-});
+export const getOption = () => {
+  const optionName = getRandomOptionName();
+
+  const option = {
+    id: optionName.toLowerCase().replaceAll(' ', '-'),
+    eventType: getRandomEventType(),
+    name: optionName,
+    price: getRandomPrice()
+  };
+
+  return option;
+};
 
 

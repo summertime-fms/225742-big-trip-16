@@ -16,7 +16,7 @@ const createSheduleTemplate = (startDate, endDate, eventDuration) => (
 
 
 export const createTripEventTemplate = (event) => {
-  const {type, city, startDate, endDate, price, isFavourite} = event;
+  const {type, destination, startDate, endDate, price, isFavourite} = event;
   const eventDuration = dayjs(endDate).diff(startDate);
   const sheduleTemplate = createSheduleTemplate(startDate, endDate, eventDuration);
   const eventDay = dayjs(startDate).format('DD MMM');
@@ -31,7 +31,7 @@ export const createTripEventTemplate = (event) => {
     <div class="event__type">
       <img class="event__type-icon" width="42" height="42" src="img/icons/${type.toLowerCase()}.png" alt="${type} icon">
     </div>
-    <h3 class="event__title">${type} ${city}</h3>
+    <h3 class="event__title">${type} ${destination.city}</h3>
       ${sheduleTemplate}
     <p class="event__price">
       &euro;&nbsp;<span class="event__price-value">${price}</span>
