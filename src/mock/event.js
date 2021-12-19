@@ -4,7 +4,7 @@ dayjs.extend(duration);
 
 import { getRandomInteger } from '../utils';
 
-import { EVENT_TYPES, City, DESCRIPTION_SENTENCES } from './const';
+import { EVENT_TYPES, CITIES, DESCRIPTION_SENTENCES } from './const';
 import { getOption } from './options';
 
 const OPTIONS_COUNT = 3;
@@ -61,10 +61,10 @@ const getDestinationPics = () => {
 
 const getDestination = () => {
   const destination = {};
-  const randomIndex = getRandomInteger(0, City.length - 1);
+  const randomIndex = getRandomInteger(0, CITIES.length - 1);
 
-  destination.city = City[randomIndex];
-  destination.desc = getDescription();
+  destination.city = CITIES[randomIndex];
+  destination.description = getDescription();
   destination.pics = getDestinationPics();
   return destination;
 };

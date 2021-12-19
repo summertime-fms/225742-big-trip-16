@@ -17,7 +17,7 @@ export const DateParam = {
   HOURS_PER_DAY: 24
 };
 
-export const City = [
+export const CITIES = [
   'Moscow',
   'Oslo',
   'Norilsk',

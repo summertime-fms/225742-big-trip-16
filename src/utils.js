@@ -34,3 +34,5 @@ export const getFormattedDuration = (eventDuration) => {
 
   return `${formatedDays} ${formatedHours} ${formatedMinutes}`;
 };
+
+export const isEventPassed = (endDate) => endDate && dayjs().isAfter(endDate, 'D');

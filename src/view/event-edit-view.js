@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import { EVENT_TYPES } from '../mock/const';
+import { CITIES } from '../mock/const';
 
 const renderEventTypes = () => {
   const eventTypesHTML = EVENT_TYPES.map((type) => (
@@ -27,15 +28,36 @@ const renderOptions = (options) => {
   return optionsHTML;
 };
 
-// const renderOthersDestinations = (currentDestination) => {
-//   const otherDestinations =
-//   `<option value="Amsterdam"></option>
-//   <option value="Geneva"></option>
-//   <option value="Chamonix"></option>`
-// }
+const renderOptionsSection = (options) => (
+  `<section class="event__section  event__section--offers">
+  <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+
+  <div class="event__available-offers">
+    ${renderOptions(options)}
+  </div>
+</section>`
+);
+
+const getOtherCitiesList = (currentCity) => {
+  const otherCities = CITIES.filter((city) => (
+    city !== currentCity
+  ));
+
+  const otherCitiesListHTML = otherCities.map((city) => (
+    `<option value="${city}"></option>`
+  )).join('');
+
+  return otherCitiesListHTML;
+};
 
 export const createEventEditTemplate = (event = {}) => {
   const { type, destination, startDate, endDate, options, price} = event;
+
+  const optionsSection = options ? renderOptionsSection(options) : '';
+
+  const { city, description } = destination;
+
+  const otherCitiesList = getOtherCitiesList(city);
 
   return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
@@ -59,9 +81,9 @@ export const createEventEditTemplate = (event = {}) => {
         <label class="event__label  event__type-output" for="event-destination-1">
           ${type}
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination.city}" list="destination-list-1">
+        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${city}" list="destination-list-1">
         <datalist id="destination-list-1">
-
+          ${otherCitiesList}
         </datalist>
       </div>
 
@@ -88,17 +110,10 @@ export const createEventEditTemplate = (event = {}) => {
       </button>
     </header>
     <section class="event__details">
-      <section class="event__section  event__section--offers">
-        <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-
-        <div class="event__available-offers">
-          ${renderOptions(options)}
-        </div>
-      </section>
-
+      ${optionsSection}
       <section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-        <p class="event__destination-description">${destination.desc}</p>
+        <p class="event__destination-description">${description}</p>
       </section>
     </section>
   </form>
