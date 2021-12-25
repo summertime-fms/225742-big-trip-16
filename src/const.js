@@ -10,6 +10,9 @@ export const EVENT_TYPES = [
   'Restaurant'
 ];
 
+export const MIN_PRICE = 50;
+export const MAX_PRICE = 500;
+
 export const DateParam = {
   MS_PER_SECOND: 1000,
   SECONDS_PER_MINUTE: 60,
@@ -29,7 +32,10 @@ export const optionsParams = {
   names: [
     'Assist with luggage',
     'Unlimited food',
-    'Excursions cashback'
+    'Excursions cashback',
+    'Museums free entrance',
+    'Unlimited sweets',
+    'Large discount'
   ],
   prices: [
     '200',

@@ -10,7 +10,11 @@ import { getEvent } from './mock/event';
 
 const EVENTS_COUNT = 15;
 
-const events = Array.from({length: EVENTS_COUNT}, getEvent);
+const events = [];
+
+for (let i = 0; i <EVENTS_COUNT; i++) {
+  events.push(getEvent(i + 1));
+}
 
 //containers
 const main = document.querySelector('main');

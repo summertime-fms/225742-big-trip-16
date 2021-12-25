@@ -1,5 +1,7 @@
-import { EVENT_TYPES, optionsParams } from './const';
+import { EVENT_TYPES, optionsParams } from '../const';
 import { getRandomInteger } from '../utils';
+
+const OFFERS_COUNT = 5;
 
 const getRandomEventType = () => {
   const randomIndex = getRandomInteger(0, EVENT_TYPES.length - 1);
@@ -16,17 +18,31 @@ const getRandomPrice = () => {
   return optionsParams.prices[randomIndex];
 };
 
-export const getOption = () => {
-  const optionName = getRandomOptionName();
+const getOffer = (id) => {
+  const offerTitle = getRandomOptionName();
 
-  const option = {
-    id: optionName.toLowerCase().replaceAll(' ', '-'),
-    eventType: getRandomEventType(),
-    name: optionName,
+  const offer = {
+    id: id,
+    labelId: offerTitle.toLowerCase().replaceAll(' ', '-'),
+    title: offerTitle,
     price: getRandomPrice()
   };
 
-  return option;
+  return offer;
+};
+
+export const getEventOffers = () => {
+  const offers = [];
+  for (let i = 0; i < OFFERS_COUNT; i++) {
+    offers.push(getOffer(i + 1));
+  }
+
+  const eventOffer = {
+    eventType: getRandomEventType(),
+    offers: offers,
+  };
+
+  return eventOffer;
 };
 
 

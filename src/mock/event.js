@@ -4,10 +4,8 @@ dayjs.extend(duration);
 
 import { getRandomInteger } from '../utils';
 
-import { EVENT_TYPES, CITIES, DESCRIPTION_SENTENCES } from './const';
-import { getOption } from './options';
-
-const OPTIONS_COUNT = 3;
+import { EVENT_TYPES, CITIES, DESCRIPTION_SENTENCES, MIN_PRICE, MAX_PRICE } from '../const';
+import { getEventOffers } from './offers';
 
 const getDate = () => {
   const gaps = {
@@ -60,31 +58,31 @@ const getDestinationPics = () => {
 };
 
 const getDestination = () => {
-  const destination = {};
   const randomIndex = getRandomInteger(0, CITIES.length - 1);
 
-  destination.city = CITIES[randomIndex];
-  destination.description = getDescription();
-  destination.pics = getDestinationPics();
+  const destination = {
+    city: CITIES[randomIndex],
+    description: getDescription(),
+    pics: getDestinationPics()
+  };
+
   return destination;
 };
 
-export const getEvent = () => {
-  const options = [];
-  for (let i = 0; i < OPTIONS_COUNT; i++) {
-    options.push(getOption());
-  }
+export const getEvent = (id) => {
+  const eventOffers = getEventOffers();
 
   const { startDate, endDate} = getDate();
 
   const event = {
+    id: id,
     type: getEventType(),
     destination: getDestination(),
-    options: options,
+    eventOffers: eventOffers,
     isFavourite: Boolean(getRandomInteger(0, -1)),
     startDate: startDate,
     endDate: endDate,
-    price: getRandomInteger(50, 500),
+    price: getRandomInteger(MIN_PRICE, MAX_PRICE),
   };
 
   return event;

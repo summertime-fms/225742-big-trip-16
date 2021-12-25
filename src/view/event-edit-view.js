@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
-import { EVENT_TYPES } from '../mock/const';
-import { CITIES } from '../mock/const';
+import { EVENT_TYPES } from '../const';
+import { CITIES } from '../const';
 
 const renderEventTypes = () => {
   const eventTypesHTML = EVENT_TYPES.map((type) => (
@@ -13,27 +13,27 @@ const renderEventTypes = () => {
   return eventTypesHTML;
 };
 
-const renderOptions = (options) => {
-  const optionsHTML = options.map((option) => (
+const renderOptions = (eventOffers) => {
+  const optionsHTML = eventOffers.offers.map((offer) => (
     `<div class="event__offer-selector">
-    <input class="event__offer-checkbox  visually-hidden" id="${option.id}" type="checkbox" name="${option.name}">
-    <label class="event__offer-label" for="${option.id}">
-      <span class="event__offer-title">${option.name}</span>
+    <input class="event__offer-checkbox  visually-hidden" id="${offer.labelId}" type="checkbox" name="${offer.title}">
+    <label class="event__offer-label" for="${offer.labelId}">
+      <span class="event__offer-title">${offer.title}</span>
       &plus;&euro;&nbsp;
-      <span class="event__offer-price">${option.price}</span>
+      <span class="event__offer-price">${offer.price}</span>
     </label>
   </div>`
-  ));
+  )).join('');
 
   return optionsHTML;
 };
 
-const renderOptionsSection = (options) => (
+const renderOffersSection = (eventOffers) => (
   `<section class="event__section  event__section--offers">
   <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
   <div class="event__available-offers">
-    ${renderOptions(options)}
+    ${renderOptions(eventOffers)}
   </div>
 </section>`
 );
@@ -51,9 +51,9 @@ const getOtherCitiesList = (currentCity) => {
 };
 
 export const createEventEditTemplate = (event = {}) => {
-  const { type, destination, startDate, endDate, options, price} = event;
+  const { type, destination, startDate, endDate, eventOffers, price} = event;
 
-  const optionsSection = options ? renderOptionsSection(options) : '';
+  const offersSection = eventOffers ? renderOffersSection(eventOffers) : '';
 
   const { city, description } = destination;
 
@@ -110,7 +110,7 @@ export const createEventEditTemplate = (event = {}) => {
       </button>
     </header>
     <section class="event__details">
-      ${optionsSection}
+      ${offersSection}
       <section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
         <p class="event__destination-description">${description}</p>
