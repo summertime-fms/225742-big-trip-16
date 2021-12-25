@@ -13,6 +13,14 @@ const renderEventTypes = () => {
   return eventTypesHTML;
 };
 
+const renderImages = (images) => {
+  const imagesHTML = images.map((image) => (
+    `<img class="event__photo" src="${image.src}" alt="${image.description}">`
+  )).join('');
+
+  return imagesHTML;
+};
+
 const renderOptions = (eventOffers) => {
   const optionsHTML = eventOffers.offers.map((offer) => (
     `<div class="event__offer-selector">
@@ -114,6 +122,12 @@ export const createEventEditTemplate = (event = {}) => {
       <section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
         <p class="event__destination-description">${description}</p>
+
+        <div class="event__photos-container">
+        <div class="event__photos-tape">
+          ${renderImages(destination.pics)}
+        </div>
+      </div>
       </section>
     </section>
   </form>
