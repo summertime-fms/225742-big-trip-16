@@ -6,9 +6,9 @@ dayjs.extend(duration);
 const createSheduleTemplate = (startDate, endDate, eventDuration) => (
   `<div class="event__schedule">
   <p class="event__time">
-    <time class="event__start-time" datetime="2019-03-19T10:00">${dayjs(startDate).format('HH:MM')}</time>
+    <time class="event__start-time" datetime=${dayjs(startDate).format('YYYY-MM-DD')}T${dayjs(startDate).format('HH:MM')}">${dayjs(startDate).format('HH:MM')}</time>
     &mdash;
-    <time class="event__end-time" datetime="2019-03-19T11:00">${dayjs(endDate).format('HH:MM')}</time>
+    <time class="event__end-time" datetime=${dayjs(endDate).format('YYYY-MM-DD')}T${dayjs(endDate).format('HH:MM')}">${dayjs(endDate).format('HH:MM')}</time>
   </p>
   <p class="event__duration">${getFormattedDuration(eventDuration)}</p>
 </div>`
@@ -27,7 +27,7 @@ export const createTripEventTemplate = (event) => {
 
   return `<li class="trip-events__item">
   <div class="event">
-    <time class="event__date" datetime="2019-03-19">${eventDay}</time>
+    <time class="event__date" datetime=${dayjs(startDate).format('YYYY-MM-DD')}T${dayjs(startDate).format('HH:MM')}">${eventDay}</time>
     <div class="event__type">
       <img class="event__type-icon" width="42" height="42" src="img/icons/${type.toLowerCase()}.png" alt="${type} icon">
     </div>

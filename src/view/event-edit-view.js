@@ -21,8 +21,8 @@ const renderImages = (images) => {
   return imagesHTML;
 };
 
-const renderOptions = (eventOffers) => {
-  const optionsHTML = eventOffers.offers.map((offer) => (
+const renderOffers = (eventOffers) => {
+  const offersHTML = eventOffers.offers.map((offer) => (
     `<div class="event__offer-selector">
     <input class="event__offer-checkbox  visually-hidden" id="${offer.labelId}" type="checkbox" name="${offer.title}">
     <label class="event__offer-label" for="${offer.labelId}">
@@ -33,7 +33,7 @@ const renderOptions = (eventOffers) => {
   </div>`
   )).join('');
 
-  return optionsHTML;
+  return offersHTML;
 };
 
 const renderOffersSection = (eventOffers) => (
@@ -41,7 +41,7 @@ const renderOffersSection = (eventOffers) => (
   <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
   <div class="event__available-offers">
-    ${renderOptions(eventOffers)}
+    ${renderOffers(eventOffers)}
   </div>
 </section>`
 );

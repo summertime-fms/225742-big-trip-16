@@ -20,6 +20,18 @@ export const DateParam = {
   HOURS_PER_DAY: 24
 };
 
+export const Gaps = {
+  DAYS_GAP: 3,
+  HOURS_GAP: 24,
+  MINUTES_GAP: 60,
+  SECONDS_GAP: 60
+};
+
+export const MIN_END_DATE = 1;
+export const MAX_END_DATE = 5;
+export const MIN_DESC_SENTENCES = 1;
+export const MAX_DESC_SENTENCES = 5;
+
 export const CITIES = [
   'Moscow',
   'Oslo',
@@ -28,7 +40,7 @@ export const CITIES = [
   'Chelyabinsk'
 ];
 
-export const optionsParams = {
+export const offersParams = {
   names: [
     'Assist with luggage',
     'Unlimited food',

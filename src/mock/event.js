@@ -4,29 +4,22 @@ dayjs.extend(duration);
 
 import { getRandomInteger } from '../utils';
 
-import { EVENT_TYPES, CITIES, DESCRIPTION_SENTENCES, MIN_PRICE, MAX_PRICE } from '../const';
+import { EVENT_TYPES, CITIES, DESCRIPTION_SENTENCES, MIN_PRICE, MAX_PRICE, Gaps, MIN_END_DATE, MIN_DESC_SENTENCES, MAX_DESC_SENTENCES, MAX_END_DATE } from '../const';
 import { getEventOffers } from './offers';
 
 const getDate = () => {
-  const gaps = {
-    DAYS_GAP: 3,
-    HOURS_GAP: 24,
-    MINUTES_GAP: 60,
-    SECONDS_GAP: 60
-  };
-
   const startDate = dayjs()
-    .add(getRandomInteger(0, gaps.DAYS_GAP), 'day')
-    .add(getRandomInteger(0, gaps.HOURS_GAP), 'hours')
-    .add(getRandomInteger(0, gaps.MINUTES_GAP), 'minutes')
-    .add(getRandomInteger(0, gaps.SECONDS_GAP), 'seconds')
+    .add(getRandomInteger(0, Gaps.DAYS_GAP), 'day')
+    .add(getRandomInteger(0, Gaps.HOURS_GAP), 'hours')
+    .add(getRandomInteger(0, Gaps.MINUTES_GAP), 'minutes')
+    .add(getRandomInteger(0, Gaps.SECONDS_GAP), 'seconds')
     .toDate();
 
-  const endDate = dayjs(startDate).add(getRandomInteger(1, 5), 'days')
-    .add(getRandomInteger(0, gaps.DAYS_GAP), 'day')
-    .add(getRandomInteger(0, gaps.HOURS_GAP), 'hours')
-    .add(getRandomInteger(0, gaps.MINUTES_GAP), 'minutes')
-    .add(getRandomInteger(0, gaps.SECONDS_GAP), 'seconds')
+  const endDate = dayjs(startDate).add(getRandomInteger(MIN_END_DATE, MAX_END_DATE), 'days')
+    .add(getRandomInteger(0, Gaps.DAYS_GAP), 'day')
+    .add(getRandomInteger(0, Gaps.HOURS_GAP), 'hours')
+    .add(getRandomInteger(0, Gaps.MINUTES_GAP), 'minutes')
+    .add(getRandomInteger(0, Gaps.SECONDS_GAP), 'seconds')
     .toDate();
 
   return { startDate, endDate };
@@ -41,8 +34,11 @@ const getDescription = () => {
   const sentencesArray = DESCRIPTION_SENTENCES.split('.')
     .map((sentence) => sentence.trim())
     .filter((sentence) => sentence);
-  const shuffledSentences = [...sentencesArray].sort(() => getRandomInteger(-1, 1));
-  return shuffledSentences.splice(0, getRandomInteger(1, 5));
+  const shuffledSentences = [...sentencesArray].sort(() => getRandomInteger(-1, 1))
+    .map((sentence) => `${sentence}.`)
+    .splice(0, getRandomInteger(MIN_DESC_SENTENCES, MAX_DESC_SENTENCES))
+    .join(' ');
+  return shuffledSentences;
 };
 
 const getDestinationPics = () => {
@@ -70,15 +66,13 @@ const getDestination = () => {
 };
 
 export const getEvent = (id) => {
-  const eventOffers = getEventOffers();
-
   const { startDate, endDate} = getDate();
 
   const event = {
     id: id,
     type: getEventType(),
     destination: getDestination(),
-    eventOffers: eventOffers,
+    eventOffers: getEventOffers(),
     isFavourite: Boolean(getRandomInteger(0, -1)),
     startDate: startDate,
     endDate: endDate,
