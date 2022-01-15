@@ -35,6 +35,6 @@ const tripEventContainer = contentListContainer.querySelector('.trip-events__lis
 
 renderTemplate(tripEventContainer, createEventEditTemplate(events[0]), RenderPosition.AFTERBEGIN);
 
-for (let i = 0; i < EVENTS_COUNT; i++) {
+for (let i = 1; i < EVENTS_COUNT; i++) {
   renderTemplate(tripEventContainer, createTripEventTemplate(events[i + 1]), RenderPosition.BEFOREEND);
 }

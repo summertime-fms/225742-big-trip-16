@@ -6,7 +6,7 @@ dayjs.extend(duration);
 const createSheduleTemplate = (startDate, endDate, eventDuration) => (
   `<div class="event__schedule">
   <p class="event__time">
-    <time class="event__start-time" datetime=${dayjs(startDate).format('YYYY-MM-DD')}T${dayjs(startDate).format('HH:MM')}">${dayjs(startDate).format('HH:MM')}</time>
+    <time class="event__start-time" datetime="${dayjs(startDate).format('YYYY-MM-DD')}T${dayjs(startDate).format('HH:MM')}">${dayjs(startDate).format('HH:MM')}</time>
     &mdash;
     <time class="event__end-time" datetime=${dayjs(endDate).format('YYYY-MM-DD')}T${dayjs(endDate).format('HH:MM')}">${dayjs(endDate).format('HH:MM')}</time>
   </p>
