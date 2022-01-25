@@ -2,6 +2,7 @@ import SiteNav from './view/menu-view';
 import Sort from './view/sort-view';
 import Filters from './view/filters-view';
 import ContentList from './view/content-list-view';
+import ListEmpty from './view/list-empty-view';
 
 import Event from './view/event-view';
 import EventEdit from './view/event-edit-view';
@@ -31,6 +32,7 @@ const SiteNavView = new SiteNav().element;
 const FiltersView = new Filters().element;
 const SortView = new Sort().element;
 const ContentListView = new ContentList().element;
+const ListEmptyView = new ListEmpty().element;
 
 render(navContainer, SiteNavView, RenderPosition.BEFOREEND);
 render(filterContainer, FiltersView, RenderPosition.BEFOREEND);
@@ -63,4 +65,8 @@ const renderEvent = (container, event) => { //а правильно ли в фу
 events.forEach((event) => {
   renderEvent(ContentListView, event);
 });
+
+if (!events.length) {
+  render(ContentListView, ListEmptyView, RenderPosition.AFTERBEGIN);
+}
 
