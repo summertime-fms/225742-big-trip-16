@@ -1,11 +1,12 @@
-import { createNavTemplate } from './view/menu-view';
+import SiteNav from './view/menu-view';
+
 import { createFilterTemplate } from './view/filters-view';
 import { createSortTemplate } from './view/sort-view';
 import { createContentListTemplate } from './view/content-list-view';
 import { createTripEventTemplate } from './view/event-view';
 import { createEventEditTemplate } from './view/event-edit-view';
 
-import { RenderPosition, renderTemplate } from './render-helpers';
+import { renderTemplate, render, RenderPosition } from './render-helpers';
 import { getEvent } from './mock/event';
 
 const EVENTS_COUNT = 15;
@@ -26,7 +27,7 @@ const contentListContainer = main.querySelector('.trip-events');
 
 //rendering
 
-renderTemplate(navContainer, createNavTemplate(), RenderPosition.BEFOREEND);
+render(navContainer, new SiteNav().element, RenderPosition.BEFOREEND);
 renderTemplate(filterContainer, createFilterTemplate(), RenderPosition.BEFOREEND);
 renderTemplate(contentListContainer, createSortTemplate(), RenderPosition.BEFOREEND);
 renderTemplate(contentListContainer, createContentListTemplate(), RenderPosition.BEFOREEND);
