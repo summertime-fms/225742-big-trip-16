@@ -1,7 +1,7 @@
 import SiteNav from './view/menu-view';
+import Sort from './view/sort-view';
 
 import { createFilterTemplate } from './view/filters-view';
-import { createSortTemplate } from './view/sort-view';
 import { createContentListTemplate } from './view/content-list-view';
 import { createTripEventTemplate } from './view/event-view';
 import { createEventEditTemplate } from './view/event-edit-view';
@@ -27,9 +27,10 @@ const contentListContainer = main.querySelector('.trip-events');
 
 //rendering
 
+
 render(navContainer, new SiteNav().element, RenderPosition.BEFOREEND);
 renderTemplate(filterContainer, createFilterTemplate(), RenderPosition.BEFOREEND);
-renderTemplate(contentListContainer, createSortTemplate(), RenderPosition.BEFOREEND);
+render(contentListContainer, new Sort().element, RenderPosition.BEFOREEND);
 renderTemplate(contentListContainer, createContentListTemplate(), RenderPosition.BEFOREEND);
 
 const tripEventContainer = contentListContainer.querySelector('.trip-events__list');
