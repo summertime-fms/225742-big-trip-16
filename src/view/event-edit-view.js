@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
-import { EVENT_TYPES } from '../const';
-import { CITIES } from '../const';
+import {EVENT_TYPES, CITIES} from '../const';
+import {createElement} from '../render-helpers';
 
 const renderEventTypes = () => {
   const eventTypesHTML = EVENT_TYPES.map((type) => (
@@ -58,7 +58,7 @@ const getOtherCitiesList = (currentCity) => {
   return otherCitiesListHTML;
 };
 
-export const createEventEditTemplate = (event = {}) => {
+const createEventEditTemplate = (event = {}) => {
   const { type, destination, startDate, endDate, eventOffers, price} = event;
 
   const offersSection = eventOffers ? renderOffersSection(eventOffers) : '';
@@ -133,3 +133,28 @@ export const createEventEditTemplate = (event = {}) => {
   </form>
 </li>`;
 };
+
+export default class EventEdit {
+  #element = null;
+  #event = null;
+
+  constructor(event) {
+    this.#event = event;
+  }
+
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
+    }
+
+    return this.#element;
+  }
+
+  get template() {
+    return createEventEditTemplate(this.#event);
+  }
+
+  removeElement() {
+    this.#element = null;
+  }
+}

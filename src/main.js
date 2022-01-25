@@ -4,11 +4,10 @@ import Filters from './view/filters-view';
 import ContentList from './view/content-list-view';
 
 import Event from './view/event-view';
+import EventEdit from './view/event-edit-view';
 
-import { createEventEditTemplate } from './view/event-edit-view';
-
-import { renderTemplate, render, RenderPosition } from './render-helpers';
-import { getEvent } from './mock/event';
+import {render, RenderPosition } from './render-helpers';
+import {getEvent} from './mock/event';
 
 const EVENTS_COUNT = 15;
 
@@ -38,10 +37,30 @@ render(filterContainer, FiltersView, RenderPosition.BEFOREEND);
 render(contentListContainer, SortView, RenderPosition.BEFOREEND);
 render(contentListContainer, ContentListView, RenderPosition.BEFOREEND);
 
-const tripEventContainer = contentListContainer.querySelector('.trip-events__list');
+const renderEvent = (container, event) => { //а правильно ли в функцию для рендеринга добавлять функционал смены вида карточки? Не смешиваются ли тут функционалы? Слышал, есть принцип по которому так лучше не делать.
+  const EventView = new Event(event).element;
+  const EventEditView = new EventEdit(event).element;
 
-renderTemplate(tripEventContainer, createEventEditTemplate(events[0]), RenderPosition.AFTERBEGIN);
+  const showEventEdit = () => {
+    container.replaceChild(EventEditView, EventView);
+  };
 
-for (let i = 1; i < EVENTS_COUNT; i++) {
-  render(tripEventContainer, new Event(events[i]).element, RenderPosition.BEFOREEND);
-}
+  const removeEventEdit = () => {
+    container.replaceChild(EventView, EventEditView);
+  };
+
+  render(container, EventView, RenderPosition.AFTERBEGIN);
+  EventView.querySelector('.event__rollup-btn')
+    .addEventListener('click', showEventEdit);
+
+  EventEditView.querySelector('form')
+    .addEventListener('submit', removeEventEdit);
+
+  EventEditView.querySelector('.event__rollup-btn')
+    .addEventListener('click', removeEventEdit);
+};
+
+events.forEach((event) => {
+  renderEvent(ContentListView, event);
+});
+
