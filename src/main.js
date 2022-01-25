@@ -8,6 +8,8 @@ import { createEventEditTemplate } from './view/event-edit-view';
 
 import { renderTemplate, render, RenderPosition } from './render-helpers';
 import { getEvent } from './mock/event';
+import SiteNav from './view/menu-view';
+import Filters from './view/filters-view';
 
 const EVENTS_COUNT = 15;
 
@@ -27,10 +29,15 @@ const contentListContainer = main.querySelector('.trip-events');
 
 //rendering
 
-render(navContainer, new SiteNav().element, RenderPosition.BEFOREEND);
-render(filterContainer, new Filters.element, RenderPosition.BEFOREEND);
-render(contentListContainer, new Sort().element, RenderPosition.BEFOREEND);
-render(contentListContainer, new ContentList().element, RenderPosition.BEFOREEND);
+const SiteNav = new SiteNav().element;
+const Filters = new Filters().element;
+const Sort = new Sort().element;
+const ContentList = new ContentList().element;
+
+render(navContainer, SiteNav, RenderPosition.BEFOREEND);
+render(filterContainer, Filters, RenderPosition.BEFOREEND);
+render(contentListContainer, Sort, RenderPosition.BEFOREEND);
+render(contentListContainer, ContentList, RenderPosition.BEFOREEND);
 
 const tripEventContainer = contentListContainer.querySelector('.trip-events__list');
 
