@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import { getFormattedDuration } from '../utils';
+import { createElement } from '../render-helpers';
 dayjs.extend(duration);
 
 const createSheduleTemplate = (startDate, endDate, eventDuration) => (
@@ -15,7 +16,7 @@ const createSheduleTemplate = (startDate, endDate, eventDuration) => (
 );
 
 
-export const createTripEventTemplate = (event) => {
+const createTripEventTemplate = (event) => {
   const {type, destination, startDate, endDate, price, isFavourite} = event;
   const eventDuration = dayjs(endDate).diff(startDate);
   const sheduleTemplate = createSheduleTemplate(startDate, endDate, eventDuration);
@@ -48,3 +49,29 @@ export const createTripEventTemplate = (event) => {
   </div>
 </li>`;
 };
+
+export default class EventView {
+  #element = null;
+  #event = null;
+
+  constructor(event) {
+    this.#event = event;
+  }
+
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
+    }
+
+    return this.#element;
+  }
+
+  get template() {
+    return createTripEventTemplate(this.#event);
+  }
+
+  removeElement() {
+    this.#element = null;
+  }
+}
+
