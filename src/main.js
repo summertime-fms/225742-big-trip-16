@@ -7,7 +7,7 @@ import ListEmptyView from './view/list-empty-view';
 import EventView from './view/event-view';
 import EventEditView from './view/event-edit-view';
 
-import {render, RenderPosition } from './render';
+import {render, RenderPosition, replace } from './utils/render';
 import {getEvent} from './mock/event';
 
 const EVENTS_COUNT = 15;
@@ -29,11 +29,11 @@ const renderEvent = (eventListElement, event) => {
   const eventEditComp = new EventEditView(event);
 
   const replaceFormToEvent = () => {
-    eventListElement.replaceChild(eventViewComp.element, eventEditComp.element);
+    replace(eventViewComp, eventEditComp);
   };
 
   const replaceEventToForm = () => {
-    eventListElement.replaceChild(eventEditComp.element, eventViewComp.element);
+    replace(eventEditComp, eventViewComp);
   };
 
   const onEscKeyDownHandler = (evt) => {
@@ -44,34 +44,32 @@ const renderEvent = (eventListElement, event) => {
     }
   };
 
-  eventViewComp.element.querySelector('.event__rollup-btn')
-    .addEventListener('click', () => {
-      replaceEventToForm();
-      document.addEventListener('keydown', replaceFormToEvent);
-    });
+  eventViewComp.setEditClickHandler(() => {
+    replaceEventToForm();
+    document.addEventListener('keydown', onEscKeyDownHandler);
+  });
 
-  eventEditComp.element.querySelector('form')
-    .addEventListener('submit', (evt) => {
-      evt.preventDefault();
+  eventEditComp.setFormSubmitHandler(() => {
+    replaceFormToEvent();
+    document.removeEventListener('keydown', onEscKeyDownHandler);
+  });
 
-      replaceFormToEvent();
-      document.removeEventListener('keydown', onEscKeyDownHandler);
-    });
+  eventEditComp.setEditCloseHandler(() => {
+    replace(eventViewComp, eventEditComp);
+    document.removeEventListener('keydown', onEscKeyDownHandler);
+  });
 
-  eventEditComp.element.querySelector('.event__rollup-btn')
-    .addEventListener('click', replaceFormToEvent);
-
-  render(eventListElement, eventViewComp.element, RenderPosition.AFTERBEGIN);
+  render(eventListElement, eventViewComp, RenderPosition.AFTERBEGIN);
 };
 
 const renderEventList = (eventsListContainer) => {
   const contentListComp = new ContentListView();
 
-  render(eventsListContainer, new SortView().element, RenderPosition.BEFOREEND);
-  render(eventsListContainer, contentListComp.element, RenderPosition.BEFOREEND);
+  render(eventsListContainer, new SortView(), RenderPosition.BEFOREEND);
+  render(eventsListContainer, contentListComp, RenderPosition.BEFOREEND);
 
   if (!events.length) {
-    render(contentListComp.element, new ListEmptyView().element, RenderPosition.AFTERBEGIN);
+    render(contentListComp.element, new ListEmptyView(), RenderPosition.AFTERBEGIN);
     return;
   }
 
@@ -80,7 +78,7 @@ const renderEventList = (eventsListContainer) => {
   });
 };
 
-render(navElement, siteNavComp.element, RenderPosition.BEFOREEND);
-render(filterElement, filtersComp.element, RenderPosition.BEFOREEND);
+render(navElement, siteNavComp, RenderPosition.BEFOREEND);
+render(filterElement, filtersComp, RenderPosition.BEFOREEND);
 
 renderEventList(contentListContainer);

@@ -1,12 +1,12 @@
 import dayjs from 'dayjs';
 import {EVENT_TYPES, CITIES} from '../const';
-import {createElement} from '../render';
+import AbstractView from './abstract-view';
 
 const renderEventTypes = () => {
-  const eventTypesHTML = EVENT_TYPES.map((type) => (
+  const eventTypesHTML = Object.keys(EVENT_TYPES).map((type) => (
     `<div class="event__type-item">
-      <input id="event-type-${type.toLowerCase()}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type.toLowerCase()}">
-      <label class="event__type-label  event__type-label--${type.toLowerCase()}" for="event-type-${type.toLowerCase()}-1">${type}</label>
+      <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}">
+      <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${type}</label>
     </div>`
   )).join('');
 
@@ -134,27 +134,36 @@ const createEventEditTemplate = (event = {}) => {
 </li>`;
 };
 
-export default class EventEditView {
-  #element = null;
+export default class EventEditView extends AbstractView {
   #event = null;
 
   constructor(event) {
+    super();
     this.#event = event;
   }
 
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
+  setFormSubmitHandler = (callback) => {
+    this._callback.formSubmit = callback;
+    this.element.querySelector('form')
+      .addEventListener('submit', this.#formSubmitHandler);
+  }
 
-    return this.#element;
+  setEditCloseHandler = (callback) => {
+    this._callback.closeForm = callback;
+    this.element.querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#editCloseHandler);
+  }
+
+  #formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.formSubmit();
+  }
+
+  #editCloseHandler = () => {
+    this._callback.closeForm();
   }
 
   get template() {
     return createEventEditTemplate(this.#event);
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }

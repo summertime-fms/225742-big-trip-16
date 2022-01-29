@@ -3,7 +3,7 @@ import duration from 'dayjs/plugin/duration';
 import { nanoid } from 'nanoid';
 dayjs.extend(duration);
 
-import { getRandomInteger } from '../utils';
+import { getRandomInteger } from '../utils/common';
 
 import { EVENT_TYPES, CITIES, DESCRIPTION_SENTENCES, MIN_PRICE, MAX_PRICE, Gaps, MIN_END_DATE, MIN_DESC_SENTENCES, MAX_DESC_SENTENCES, MAX_END_DATE } from '../const';
 import { getEventOffers } from './offers';
@@ -27,8 +27,9 @@ const getDate = () => {
 };
 
 const getEventType = () => {
-  const randomIndex = getRandomInteger(0, EVENT_TYPES.length - 1);
-  return EVENT_TYPES[randomIndex];
+  const eventTypesArray = Object.keys(EVENT_TYPES);
+  const randomIndex = getRandomInteger(0, eventTypesArray.length - 1);
+  return eventTypesArray[randomIndex];
 };
 
 const getDescription = () => {

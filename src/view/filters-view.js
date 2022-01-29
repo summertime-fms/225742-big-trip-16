@@ -1,4 +1,4 @@
-import {createElement} from '../render';
+import AbstractView from './abstract-view';
 
 const createFilterItemTemplate = (filter, isChecked) => {
   const {value, label} = filter;
@@ -23,12 +23,12 @@ const createFilterTemplate = (filters, currentFilter) => {
           </form>`;
 };
 
-export default class FiltersView {
-  #element = null;
+export default class FiltersView extends AbstractView {
   #filters = null;
   #currentFilter = null;
 
   constructor() {
+    super();
     this.#filters = [
       {
         value: 'everything',
@@ -47,19 +47,7 @@ export default class FiltersView {
     this.#currentFilter = 'future';
   }
 
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
   get template() {
     return createFilterTemplate(this.#filters, this.#currentFilter);
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }

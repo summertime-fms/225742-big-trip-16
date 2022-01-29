@@ -1,14 +1,14 @@
-export const EVENT_TYPES = [
-  'Taxi',
-  'Bus',
-  'Train',
-  'Ship',
-  'Drive',
-  'Flight',
-  'Check-In',
-  'Sightseeing',
-  'Restaurant'
-];
+export const EVENT_TYPES = {
+  taxi: 'Taxi',
+  bus: 'Bus',
+  train: 'Train',
+  ship: 'Ship',
+  drive: 'Drive',
+  flight: 'Flight',
+  'check-in': 'Check-In',
+  sightseeing: 'Sightseeing',
+  restaurant: 'Restaurant',
+};
 
 export const MIN_PRICE = 50;
 export const MAX_PRICE = 500;
