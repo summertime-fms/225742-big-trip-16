@@ -7,11 +7,10 @@ import ListEmptyView from './view/list-empty-view';
 import EventView from './view/event-view';
 import EventEditView from './view/event-edit-view';
 
-import {render, RenderPosition } from './render-helpers';
+import {render, RenderPosition } from './render';
 import {getEvent} from './mock/event';
 
 const EVENTS_COUNT = 15;
-
 const events = Array.from({length: EVENTS_COUNT}, getEvent);
 
 //containers
