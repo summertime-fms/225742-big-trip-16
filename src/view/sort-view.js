@@ -1,36 +1,62 @@
 import { createElement } from '../render-helpers';
 
-const createSortTemplate = () => (
-  `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
-  <div class="trip-sort__item  trip-sort__item--day">
-    <input id="sort-day" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-day">
-    <label class="trip-sort__btn" for="sort-day">Day</label>
-  </div>
+const createSortItemTemplate = (sort, isChecked, isDisabled) => {
+  const {label, value} = sort;
+  const checkedProp = isChecked ? 'checked' : '';
+  const disabledProp = isDisabled ? 'disabled' : '';
 
-  <div class="trip-sort__item  trip-sort__item--event">
-    <input id="sort-event" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-event" disabled>
-    <label class="trip-sort__btn" for="sort-event">Event</label>
-  </div>
+  return `<div class="trip-sort__item  trip-sort__item--day">
+            <input id="${value}" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="${value}" ${disabledProp} ${checkedProp}>
+            <label class="trip-sort__btn" for="${value}">${label}</label>
+        </div>`;
+};
 
-  <div class="trip-sort__item  trip-sort__item--time">
-    <input id="sort-time" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-time">
-    <label class="trip-sort__btn" for="sort-time">Time</label>
-  </div>
+const createSortTemplate = (sort, currentSort, disabledItems) => {
+  const sortItemsTemplate = sort.map((sortItem, index ) => {
+    const isChecked = (currentSort) ? sortItem.value === currentSort : index === 0;
+    const isDisabled = disabledItems.some((item) => item === sortItem.value);
 
-  <div class="trip-sort__item  trip-sort__item--price">
-    <input id="sort-price" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-price" checked>
-    <label class="trip-sort__btn" for="sort-price">Price</label>
-  </div>
+    return createSortItemTemplate(sortItem, isChecked, isDisabled);
+  }).join('');
 
-  <div class="trip-sort__item  trip-sort__item--offer">
-    <input id="sort-offer" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-offer" disabled>
-    <label class="trip-sort__btn" for="sort-offer">Offers</label>
-  </div>
-</form>`
-);
+  return `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
+            ${sortItemsTemplate}
+          </form>`;
+};
 
-export default class Sort {
+export default class SortView {
   #element = null;
+  #sort = null;
+  #currentSort = null;
+  #disabledSortItems = null;
+
+  constructor() {
+    this.#sort = [
+      {
+        value: 'sort-day',
+        label: 'Day'
+      },
+      {
+        value: 'sort-event',
+        label: 'Event'
+      },
+      {
+        value: 'sort-time',
+        label: 'Time'
+      },
+      {
+        value: 'sort-price',
+        label: 'Price'
+      },
+      {
+        value: 'sort-offers',
+        label: 'Offers'
+      },
+    ];
+
+    this.#currentSort = 'sort-day';
+    this.#disabledSortItems = [];
+  }
 
   get element() {
     if (!this.#element) {
@@ -41,7 +67,7 @@ export default class Sort {
   }
 
   get template() {
-    return createSortTemplate();
+    return createSortTemplate(this.#sort, this.#currentSort, this.#disabledSortItems);
   }
 
   removeElement() {

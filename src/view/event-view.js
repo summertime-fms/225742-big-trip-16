@@ -50,7 +50,7 @@ const createTripEventTemplate = (event) => {
 </li>`;
 };
 
-export default class Event {
+export default class EventView {
   #element = null;
   #event = null;
 

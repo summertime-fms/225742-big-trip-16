@@ -134,7 +134,7 @@ const createEventEditTemplate = (event = {}) => {
 </li>`;
 };
 
-export default class EventEdit {
+export default class EventEditView {
   #element = null;
   #event = null;
 

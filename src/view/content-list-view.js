@@ -5,7 +5,7 @@ const createContentListTemplate = () => (
   </ul>`
 );
 
-export default class ContentList {
+export default class ContentListView {
   #element = null;
 
   get element() {

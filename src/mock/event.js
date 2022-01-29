@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
+import { nanoid } from 'nanoid';
 dayjs.extend(duration);
 
 import { getRandomInteger } from '../utils';
@@ -65,11 +66,11 @@ const getDestination = () => {
   return destination;
 };
 
-export const getEvent = (id) => {
+export const getEvent = () => {
   const { startDate, endDate} = getDate();
 
   const event = {
-    id: id,
+    id: nanoid(),
     type: getEventType(),
     destination: getDestination(),
     eventOffers: getEventOffers(),

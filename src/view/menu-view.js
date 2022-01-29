@@ -1,14 +1,30 @@
 import {createElement} from '../render-helpers';
 
-const createNavTemplate = () => (
-  `<nav class="trip-controls__trip-tabs  trip-tabs">
-  <a class="trip-tabs__btn  trip-tabs__btn--active" href="#">Table</a>
-  <a class="trip-tabs__btn" href="#">Stats</a>
-  </nav>`
-);
+const createNavItemTemplate = (navItem, isActive) => {
+  const isActiveClassName = isActive ? 'trip-tabs__btn--active' : '';
 
-export default class SiteNav {
+  return `<a class="trip-tabs__btn ${isActiveClassName}" href="#">${navItem}</a>`;
+};
+
+const createNavTemplate = (navItems, activeItem) => {
+  const navItemsTemplate = navItems.map((navItem, index) => {
+    const isActive = (activeItem) ? activeItem === navItem : index === 0;
+    return createNavItemTemplate(navItem, isActive);
+  }).join('');
+
+  return `<nav class="trip-controls__trip-tabs  trip-tabs">
+            ${navItemsTemplate}
+         </nav>`;
+};
+
+export default class MenuView {
   #element = null;
+  #navItems = null;
+  #activeNavItem = null;
+
+  constructor() {
+    this.#navItems = ['Table', 'Stats'];
+  }
 
   get element() {
     if (!this.#element) {
@@ -19,7 +35,7 @@ export default class SiteNav {
   }
 
   get template() {
-    return createNavTemplate();
+    return createNavTemplate(this.#navItems, this.#activeNavItem);
   }
 
   removeElement() {

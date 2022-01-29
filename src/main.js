@@ -1,72 +1,87 @@
-import SiteNav from './view/menu-view';
-import Sort from './view/sort-view';
-import Filters from './view/filters-view';
-import ContentList from './view/content-list-view';
-import ListEmpty from './view/list-empty-view';
+import MenuView from './view/menu-view';
+import SortView from './view/sort-view';
+import FiltersView from './view/filters-view';
+import ContentListView from './view/content-list-view';
+import ListEmptyView from './view/list-empty-view';
 
-import Event from './view/event-view';
-import EventEdit from './view/event-edit-view';
+import EventView from './view/event-view';
+import EventEditView from './view/event-edit-view';
 
 import {render, RenderPosition } from './render-helpers';
 import {getEvent} from './mock/event';
 
 const EVENTS_COUNT = 15;
 
-const events = [];
-
-for (let i = 0; i < EVENTS_COUNT; i++) {
-  events.push(getEvent(i + 1));
-}
+const events = Array.from({length: EVENTS_COUNT}, getEvent);
 
 //containers
-const main = document.querySelector('main');
+const mainElement = document.querySelector('main');
 
-const navContainer = document.querySelector('.trip-controls__navigation');
-const filterContainer = document.querySelector('.trip-controls__filters');
-const contentListContainer = main.querySelector('.trip-events');
-
+const navElement = document.querySelector('.trip-controls__navigation');
+const filterElement = document.querySelector('.trip-controls__filters');
+const contentListContainer = mainElement.querySelector('.trip-events');
 
 //rendering
+const siteNavComp = new MenuView();
+const filtersComp = new FiltersView();
 
-const SiteNavView = new SiteNav().element;
-const FiltersView = new Filters().element;
-const SortView = new Sort().element;
-const ContentListView = new ContentList().element;
-const ListEmptyView = new ListEmpty().element;
+const renderEvent = (eventListElement, event) => {
+  const eventViewComp = new EventView(event);
+  const eventEditComp = new EventEditView(event);
 
-render(navContainer, SiteNavView, RenderPosition.BEFOREEND);
-render(filterContainer, FiltersView, RenderPosition.BEFOREEND);
-render(contentListContainer, SortView, RenderPosition.BEFOREEND);
-render(contentListContainer, ContentListView, RenderPosition.BEFOREEND);
-
-const renderEvent = (container, event) => { //а правильно ли в функцию для рендеринга добавлять функционал смены вида карточки? Не смешиваются ли тут функционалы? Слышал, есть принцип по которому так лучше не делать.
-  const EventView = new Event(event).element;
-  const EventEditView = new EventEdit(event).element;
-
-  const showEventEdit = () => {
-    container.replaceChild(EventEditView, EventView);
+  const replaceFormToEvent = () => {
+    eventListElement.replaceChild(eventViewComp.element, eventEditComp.element);
   };
 
-  const removeEventEdit = () => {
-    container.replaceChild(EventView, EventEditView);
+  const replaceEventToForm = () => {
+    eventListElement.replaceChild(eventEditComp.element, eventViewComp.element);
   };
 
-  render(container, EventView, RenderPosition.AFTERBEGIN);
-  EventView.querySelector('.event__rollup-btn')
-    .addEventListener('click', showEventEdit);
+  const onEscKeyDownHandler = (evt) => {
+    if (evt.key === 'Esc' || evt.key === 'Escape') {
+      evt.preventDefault();
+      replaceFormToEvent();
+      document.removeEventListener('keydown', onEscKeyDownHandler);
+    }
+  };
 
-  EventEditView.querySelector('form')
-    .addEventListener('submit', removeEventEdit);
+  eventViewComp.element.querySelector('.event__rollup-btn')
+    .addEventListener('click', () => {
+      replaceEventToForm();
+      document.addEventListener('keydown', replaceFormToEvent);
+    });
 
-  EventEditView.querySelector('.event__rollup-btn')
-    .addEventListener('click', removeEventEdit);
+  eventEditComp.element.querySelector('form')
+    .addEventListener('submit', (evt) => {
+      evt.preventDefault();
+
+      replaceFormToEvent();
+      document.removeEventListener('keydown', onEscKeyDownHandler);
+    });
+
+  eventEditComp.element.querySelector('.event__rollup-btn')
+    .addEventListener('click', replaceFormToEvent);
+
+  render(eventListElement, eventViewComp.element, RenderPosition.AFTERBEGIN);
 };
 
-events.forEach((event) => {
-  renderEvent(ContentListView, event);
-});
+const renderEventList = (eventsListContainer) => {
+  const contentListComp = new ContentListView();
 
-if (!events.length) {
-  render(ContentListView, ListEmptyView, RenderPosition.AFTERBEGIN);
-}
+  render(eventsListContainer, new SortView().element, RenderPosition.BEFOREEND);
+  render(eventsListContainer, contentListComp.element, RenderPosition.BEFOREEND);
 
+  if (!events.length) {
+    render(contentListComp.element, new ListEmptyView().element, RenderPosition.AFTERBEGIN);
+    return;
+  }
+
+  events.forEach((event) => {
+    renderEvent(contentListComp.element, event);
+  });
+};
+
+render(navElement, siteNavComp.element, RenderPosition.BEFOREEND);
+render(filterElement, filtersComp.element, RenderPosition.BEFOREEND);
+
+renderEventList(contentListContainer);
