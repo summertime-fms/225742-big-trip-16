@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import {EVENT_TYPES, CITIES} from '../const';
-import {createElement} from '../render-helpers';
+import {createElement} from '../render';
 
 const renderEventTypes = () => {
   const eventTypesHTML = EVENT_TYPES.map((type) => (

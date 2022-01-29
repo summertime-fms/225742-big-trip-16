@@ -1,4 +1,4 @@
-import {createElement} from '../render-helpers';
+import {createElement} from '../render';
 
 const createFilterItemTemplate = (filter, isChecked) => {
   const {value, label} = filter;
