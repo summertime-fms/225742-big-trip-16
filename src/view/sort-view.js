@@ -1,4 +1,4 @@
-import { createElement } from '../render';
+import AbstractView from './abstract-view';
 
 const createSortItemTemplate = (sort, isChecked, isDisabled) => {
   const {label, value} = sort;
@@ -24,13 +24,13 @@ const createSortTemplate = (sort, currentSort, disabledItems) => {
           </form>`;
 };
 
-export default class SortView {
-  #element = null;
+export default class SortView extends AbstractView {
   #sort = null;
   #currentSort = null;
   #disabledSortItems = null;
 
   constructor() {
+    super();
     this.#sort = [
       {
         value: 'sort-day',
@@ -58,19 +58,7 @@ export default class SortView {
     this.#disabledSortItems = [];
   }
 
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
   get template() {
     return createSortTemplate(this.#sort, this.#currentSort, this.#disabledSortItems);
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }

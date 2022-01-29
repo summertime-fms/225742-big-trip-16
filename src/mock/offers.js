@@ -1,5 +1,5 @@
 import { EVENT_TYPES, offersParams } from '../const';
-import { getRandomInteger } from '../utils';
+import { getRandomInteger } from '../utils/common';
 
 const OFFERS_COUNT = 5;
 

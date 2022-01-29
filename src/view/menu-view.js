@@ -1,4 +1,4 @@
-import {createElement} from '../render';
+import AbstractView from './abstract-view';
 
 const createNavItemTemplate = (navItem, isActive) => {
   const isActiveClassName = isActive ? 'trip-tabs__btn--active' : '';
@@ -17,28 +17,16 @@ const createNavTemplate = (navItems, activeItem) => {
          </nav>`;
 };
 
-export default class MenuView {
-  #element = null;
+export default class MenuView extends AbstractView {
   #navItems = null;
   #activeNavItem = null;
 
   constructor() {
+    super();
     this.#navItems = ['Table', 'Stats'];
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
   }
 
   get template() {
     return createNavTemplate(this.#navItems, this.#activeNavItem);
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }

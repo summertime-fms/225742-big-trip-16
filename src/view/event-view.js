@@ -1,7 +1,8 @@
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import { getFormattedDuration } from '../utils';
-import { createElement } from '../render';
+import { getFormattedDuration } from '../utils/common';
+import AbstractView from './abstract-view';
+import {EVENT_TYPES} from '../const';
 dayjs.extend(duration);
 
 const createSheduleTemplate = (startDate, endDate, eventDuration) => (
@@ -30,9 +31,9 @@ const createTripEventTemplate = (event) => {
   <div class="event">
     <time class="event__date" datetime=${dayjs(startDate).format('YYYY-MM-DD')}T${dayjs(startDate).format('HH:MM')}">${eventDay}</time>
     <div class="event__type">
-      <img class="event__type-icon" width="42" height="42" src="img/icons/${type.toLowerCase()}.png" alt="${type} icon">
+      <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="${EVENT_TYPES[type]} icon">
     </div>
-    <h3 class="event__title">${type} ${destination.city}</h3>
+    <h3 class="event__title">${EVENT_TYPES[type]} ${destination.city}</h3>
       ${sheduleTemplate}
     <p class="event__price">
       &euro;&nbsp;<span class="event__price-value">${price}</span>
@@ -50,28 +51,26 @@ const createTripEventTemplate = (event) => {
 </li>`;
 };
 
-export default class EventView {
-  #element = null;
+export default class EventView extends AbstractView {
   #event = null;
 
   constructor(event) {
+    super();
     this.#event = event;
   }
 
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
+  setEditClickHandler = (callback) => {
+    this._callback.click = callback;
+    this.element.querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#editClickHandler);
+  }
 
-    return this.#element;
+  #editClickHandler = () => {
+    this._callback.click();
   }
 
   get template() {
     return createTripEventTemplate(this.#event);
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }
 
