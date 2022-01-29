@@ -1,4 +1,4 @@
-import {createElement} from '../render-helpers';
+import {createElement} from '../render';
 
 const createContentListTemplate = () => (
   `<ul class="trip-events__list">

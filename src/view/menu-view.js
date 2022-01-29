@@ -1,4 +1,4 @@
-import {createElement} from '../render-helpers';
+import {createElement} from '../render';
 
 const createNavItemTemplate = (navItem, isActive) => {
   const isActiveClassName = isActive ? 'trip-tabs__btn--active' : '';

@@ -1,4 +1,4 @@
-import { createElement } from '../render-helpers';
+import { createElement } from '../render';
 
 const createListEmptyTemplate = () => (
   '<p class="trip-events__msg">Click New Event to create your first point</p>'

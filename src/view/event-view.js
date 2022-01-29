@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import { getFormattedDuration } from '../utils';
-import { createElement } from '../render-helpers';
+import { createElement } from '../render';
 dayjs.extend(duration);
 
 const createSheduleTemplate = (startDate, endDate, eventDuration) => (

@@ -1,4 +1,4 @@
-import { createElement } from '../render-helpers';
+import { createElement } from '../render';
 
 const createSortItemTemplate = (sort, isChecked, isDisabled) => {
   const {label, value} = sort;
