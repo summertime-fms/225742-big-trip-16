@@ -50,3 +50,16 @@ export const replace = (newElement, oldElement) => {
 
   parent.replaceChild(newChild, oldChild);
 };
+
+export const remove = (comp) => {
+  if (comp === null) {
+    return;
+  }
+
+  if (!(comp instanceof AbstractView)) {
+    throw new Error ('Can remove only components');
+  }
+
+  comp.element.remove();
+  comp.removeElement();
+};
